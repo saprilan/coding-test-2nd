@@ -1,7 +1,7 @@
 from typing import List, Tuple
 from langchain.schema import Document
 from langchain.vectorstores import Chroma
-from langchain.embeddings import OpenAIEmbeddings
+from langchain.embeddings import OllamaEmbeddings
 from config import settings
 import logging
 import os
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 class VectorStoreService:
     def __init__(self):
         # Initialize embedding model
-        self.embedding_model = OpenAIEmbeddings(openai_api_key=settings.openai_api_key)
+        self.embedding_model = OllamaEmbeddings(model="mistral")
         
         # Initialize Chroma vector store
         self.vectorstore = Chroma(
@@ -24,7 +24,6 @@ class VectorStoreService:
     def add_documents(self, documents: List[Document]) -> None:
         """Add documents to the vector store"""
         try:
-            print(self.vectorstore)
             self.vectorstore.add_documents(documents)
             self.vectorstore.persist()
             logger.info("Added %d documents to vector store", len(documents))

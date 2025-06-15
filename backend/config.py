@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     ).split(",")
     
     # Logging configuration
-    log_level: str = os.getenv("LOG_LEVEL", "ERROR")
+    log_level: str = os.getenv("LOG_LEVEL", "INFO")
     
     class Config:
         env_file = ".env"
