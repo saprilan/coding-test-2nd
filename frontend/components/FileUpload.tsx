@@ -1,73 +1,51 @@
 import React, { useState } from 'react';
 
 interface FileUploadProps {
-  onUploadComplete?: (result: any) => void;
-  onUploadError?: (error: string) => void;
+  onUploadComplete: (res: any) => void;
+  onUploadError: (err: string) => void;
 }
 
 export default function FileUpload({ onUploadComplete, onUploadError }: FileUploadProps) {
   const [file, setFile] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // TODO: Implement file selection
-    // 1. Validate file type (PDF only)
-    // 2. Validate file size
-    // 3. Set selected file
-  };
 
   const handleUpload = async () => {
-    // TODO: Implement file upload
-    // 1. Create FormData with selected file
-    // 2. Send POST request to /api/upload
-    // 3. Handle upload progress
-    // 4. Handle success/error responses
-  };
+    if (!file) return;
 
-  const handleDragOver = (e: React.DragEvent) => {
-    // TODO: Handle drag over events
-  };
+    const formData = new FormData();
+    formData.append('file', file);
 
-  const handleDrop = (e: React.DragEvent) => {
-    // TODO: Handle file drop events
+    try {
+      const response = await fetch('http://localhost:8000/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const data = await response.json();
+      onUploadComplete(data);
+    } catch (error: any) {
+      onUploadError(error.message || 'An error occurred');
+    }
   };
 
   return (
-    <div className="file-upload">
-      {/* TODO: Implement file upload UI */}
-      
-      {/* Drag & Drop area */}
-      <div 
-        className="upload-area"
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-      >
-        {/* TODO: Implement drag & drop UI */}
-      </div>
-
-      {/* File input */}
+    <div className="flex flex-col items-center gap-4">
       <input
         type="file"
-        accept=".pdf"
-        onChange={handleFileSelect}
-        style={{ display: 'none' }}
+        accept="application/pdf"
+        onChange={(e) => setFile(e.target.files?.[0] || null)}
+        className="border border-gray-300 rounded p-2"
       />
-
-      {/* Upload button */}
-      <button 
+      <button
         onClick={handleUpload}
-        disabled={!file || isUploading}
+        disabled={!file}
+        className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
       >
-        {isUploading ? 'Uploading...' : 'Upload PDF'}
+        Upload PDF
       </button>
-
-      {/* Progress bar */}
-      {isUploading && (
-        <div className="progress-bar">
-          {/* TODO: Implement progress bar */}
-        </div>
-      )}
     </div>
   );
-} 
+}

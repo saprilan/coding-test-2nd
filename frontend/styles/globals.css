@@ -1,18 +1,83 @@
+/* Reset and base styles */
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: #f9fafb; /* Light gray background */
+  color: #111827; /* Tailwind's gray-900 */
+  line-height: 1.6;
 }
 
+/* Anchor styling */
 a {
   color: inherit;
   text-decoration: none;
 }
 
-* {
+/* Global box sizing */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-/* TODO: Add your custom styles here */ 
+/* Scrollbar (optional) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+/* Chat interface styles (optional base) */
+.chat-interface {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+/* Chat bubbles (can also be Tailwind classes in JSX) */
+.message.user {
+  align-self: flex-end;
+  background-color: #e0f2fe;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  margin: 0.25rem 0;
+  max-width: 70%;
+}
+
+.message.assistant {
+  align-self: flex-start;
+  background-color: #f1f5f9;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  margin: 0.25rem 0;
+  max-width: 70%;
+}
+
+/* Input area */
+.input-area {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* File upload area */
+.upload-area {
+  transition: border-color 0.2s ease;
+}
+.upload-area:hover {
+  border-color: #3b82f6; /* Tailwind blue-500 */
+}
